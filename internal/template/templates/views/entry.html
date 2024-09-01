@@ -211,7 +211,7 @@
         {{ end }}
         {{end}}
         {{ if .user }}
-        {{ noescape (proxyFilter .entry.Content) }}
+        {{ noescape (proxyFilter .entry.Content .entry.Feed.SiteURL) }}
         {{ else }}
         {{ noescape .entry.Content }}
         {{ end }}

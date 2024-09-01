@@ -29,6 +29,7 @@ func (h *handler) mediaProxy(w http.ResponseWriter, r *http.Request) {
 
 	encodedDigest := request.RouteStringParam(r, "encodedDigest")
 	encodedURL := request.RouteStringParam(r, "encodedURL")
+	encodedReferer := request.RouteStringParam(r, "encodedReferer")
 	if encodedURL == "" {
 		html.BadRequest(w, r, errors.New("no URL provided"))
 		return
@@ -43,6 +44,12 @@ func (h *handler) mediaProxy(w http.ResponseWriter, r *http.Request) {
 	decodedURL, err := base64.URLEncoding.DecodeString(encodedURL)
 	if err != nil {
 		html.BadRequest(w, r, errors.New("unable to decode this URL"))
+		return
+	}
+
+	decodedReferer, err := base64.URLEncoding.DecodeString(encodedReferer)
+	if err != nil {
+		html.BadRequest(w, r, errors.New("unable to decode this referer"))
 		return
 	}
 
@@ -85,6 +92,10 @@ func (h *handler) mediaProxy(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		html.ServerError(w, r, err)
 		return
+	}
+
+	if decodedReferer != nil {
+		req.Header.Add("Referer", string(decodedReferer))
 	}
 
 	// Note: User-Agent HTTP header is omitted to avoid being blocked by bot protection mechanisms.
