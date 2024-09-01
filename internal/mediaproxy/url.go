@@ -31,7 +31,7 @@ func ProxifyRelativeURL(router *mux.Router, mediaURL string, feedSiteURL ...stri
 
 	if (len(feedSiteURL) > 0) {
 		referer := feedSiteURL[0]
-		return route.Path(router, "proxy", "encodedDigest", base64.URLEncoding.EncodeToString(digest), "encodedURL", base64.URLEncoding.EncodeToString([]byte(mediaURL)), "referer", base64.URLEncoding.EncodeToString([]byte(referer)))
+		return route.Path(router, "proxy", "encodedDigest", base64.URLEncoding.EncodeToString(digest), "encodedURL", base64.URLEncoding.EncodeToString([]byte(mediaURL)), "encodedReferer", base64.URLEncoding.EncodeToString([]byte(feedSiteURL)))
 	}
 
 	return route.Path(router, "proxy", "encodedDigest", base64.URLEncoding.EncodeToString(digest), "encodedURL", base64.URLEncoding.EncodeToString([]byte(mediaURL)))
