@@ -19,15 +19,19 @@ type urlProxyRewriter func(router *mux.Router, url string) string
 
 func RewriteDocumentWithRelativeProxyURL(router *mux.Router, htmlDocument string, feedSiteURL ...string) string {
 
-	proxifyFunc := func(router *mux.Router, url string) string {
+	proxifyFunction := func(router *mux.Router, url string) string {
 		return ProxifyRelativeURL(router, url, feedSiteURL...)
 	}
 
-	return genericProxyRewriter(router, proxifyFunc, htmlDocument)
+	return genericProxyRewriter(router, proxifyFunction, htmlDocument)
 }
 
 func RewriteDocumentWithAbsoluteProxyURL(router *mux.Router, htmlDocument string) string {
-	return genericProxyRewriter(router, ProxifyAbsoluteURL, htmlDocument)
+	proxifyFunction := func(router *mux.Router, url string) string {
+		return ProxifyAbsoluteURL(router, url)
+	}
+
+	return genericProxyRewriter(router, proxifyFunction, htmlDocument)
 }
 
 func genericProxyRewriter(router *mux.Router, proxifyFunction urlProxyRewriter, htmlDocument string) string {
