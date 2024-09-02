@@ -26,9 +26,9 @@ func RewriteDocumentWithRelativeProxyURL(router *mux.Router, htmlDocument string
 	return genericProxyRewriter(router, proxifyFunction, htmlDocument)
 }
 
-func RewriteDocumentWithAbsoluteProxyURL(router *mux.Router, htmlDocument string) string {
+func RewriteDocumentWithAbsoluteProxyURL(router *mux.Router, htmlDocument string, feedSiteURL ...string) string {
 	proxifyFunction := func(router *mux.Router, url string) string {
-		return ProxifyAbsoluteURL(router, url)
+		return ProxifyAbsoluteURL(router, url, feedSiteURL...)
 	}
 
 	return genericProxyRewriter(router, proxifyFunction, htmlDocument)
