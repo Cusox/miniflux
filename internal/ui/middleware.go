@@ -161,6 +161,7 @@ func (m *middleware) isPublicRoute(r *http.Request) bool {
 		"healthcheck",
 		"offline",
 		"proxy",
+		"proxyWithReferer",
 		"webauthnLoginBegin",
 		"webauthnLoginFinish":
 		return true
