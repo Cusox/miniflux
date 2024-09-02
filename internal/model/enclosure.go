@@ -46,7 +46,7 @@ func (el EnclosureList) ContainsAudioOrVideo() bool {
 	return false
 }
 
-func (el EnclosureList) ProxifyEnclosureURL(router *mux.Router) {
+func (el EnclosureList) ProxifyEnclosureURL(router *mux.Router, feedSiteURL ...string) {
 	proxyOption := config.Opts.MediaProxyMode()
 
 	if proxyOption == "all" || proxyOption != "none" {
@@ -54,7 +54,7 @@ func (el EnclosureList) ProxifyEnclosureURL(router *mux.Router) {
 			if urllib.IsHTTPS(el[i].URL) {
 				for _, mediaType := range config.Opts.MediaProxyResourceTypes() {
 					if strings.HasPrefix(el[i].MimeType, mediaType+"/") {
-						el[i].URL = mediaproxy.ProxifyAbsoluteURL(router, el[i].URL)
+						el[i].URL = mediaproxy.ProxifyAbsoluteURL(router, el[i].URL, feedSiteURL...)
 						break
 					}
 				}
@@ -63,13 +63,13 @@ func (el EnclosureList) ProxifyEnclosureURL(router *mux.Router) {
 	}
 }
 
-func (e *Enclosure) ProxifyEnclosureURL(router *mux.Router) {
+func (e *Enclosure) ProxifyEnclosureURL(router *mux.Router, feedSiteURL ...string) {
 	proxyOption := config.Opts.MediaProxyMode()
 
 	if proxyOption == "all" || proxyOption != "none" && !urllib.IsHTTPS(e.URL) {
 		for _, mediaType := range config.Opts.MediaProxyResourceTypes() {
 			if strings.HasPrefix(e.MimeType, mediaType+"/") {
-				e.URL = mediaproxy.ProxifyAbsoluteURL(router, e.URL)
+				e.URL = mediaproxy.ProxifyAbsoluteURL(router, e.URL, feedSiteURL...)
 				break
 			}
 		}

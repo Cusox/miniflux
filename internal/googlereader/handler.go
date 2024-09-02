@@ -1002,9 +1002,9 @@ func (h *handler) streamItemContentsHandler(w http.ResponseWriter, r *http.Reque
 			categories = append(categories, userStarred)
 		}
 
-		entry.Content = mediaproxy.RewriteDocumentWithAbsoluteProxyURL(h.router, entry.Content, entry.Feed.SiteURL)
+		entry.Content = mediaproxy.RewriteDocumentWithAbsoluteProxyURL(h.router, entry.Content, entry.Feed.SiteURL...)
 
-		entry.Enclosures.ProxifyEnclosureURL(h.router)
+		entry.Enclosures.ProxifyEnclosureURL(h.router, entry.Feed.SiteURL...)
 
 		contentItems[i] = contentItem{
 			ID:            fmt.Sprintf(EntryIDLong, entry.ID),
